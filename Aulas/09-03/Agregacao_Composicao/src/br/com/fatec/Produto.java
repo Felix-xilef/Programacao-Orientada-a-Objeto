@@ -12,7 +12,10 @@ package br.com.fatec;
 public class Produto {
     private String descricao;
     private float preco;
-    //Montando uma Agregação
+    //Montando a composição:
+    //Necessário que o objeto da composição seja colocado em todos métodos construtores
+    private Componente componente;
+    //Montando uma Agregação:
     //Pode-se instanciar a variável fornecedor em algum outro ponto do programa:
     private Fornecedor fornecedor;
     //Pode-se instanciar a variável fornecedor logo ao declara-la:
@@ -33,18 +36,29 @@ public class Produto {
     }
     
     //Construtores
-    public Produto() {
+    public Produto(Componente componente) {
         //Pode-se instanciar a variável fornecedor no construtor:
         //setFornecedor(new Fornecedor());
+        this.componente = componente;
+        //ou setComponente(componente);
     }
 
-    public Produto(String descricao) {
+    public Produto(String descricao, Componente componente) {
         //Chama o construtor caso a variável fornecedor for instanciada no construtor:
         //this();
+        this(componente);
         this.descricao = descricao;
     }
     
     //Getters & Setters
+    public Componente getComponente() {
+        return componente;
+    }
+
+    public void setComponente(Componente componente) {
+        this.componente = componente;
+    }
+    
     public Fornecedor getFornecedor() {
         return fornecedor;
     }

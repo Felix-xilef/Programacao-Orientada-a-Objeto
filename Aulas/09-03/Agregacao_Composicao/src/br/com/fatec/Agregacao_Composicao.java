@@ -15,7 +15,20 @@ public class Agregacao_Composicao {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Produto p1 = new Produto();
+        //Para criar um produto é obrigatório que exista um objeto componente
+        
+        //Criando componente fora do produto
+        Componente cp = new Componente();
+        Produto p1 = new Produto(cp);
+        //Atribuir algo ao componente de p1: (2 jeitos)
+        cp.setChip("Maria");
+        p1.getComponente().setQtdTransistores(2000);
+        
+        //Criando componente anônimo (direto no produto):
+        Produto p2 = new Produto(new Componente());
+        //Atribuir algo ao componente de p2: (1 jeito)
+        p2.getComponente().setQtdTransistores(1490);
+        
         //Colocar Dados
         p1.setDescricao("Régua 30cm");
         p1.setPreco(3.87f);
