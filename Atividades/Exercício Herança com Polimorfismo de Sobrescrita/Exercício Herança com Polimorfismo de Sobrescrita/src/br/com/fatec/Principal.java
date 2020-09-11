@@ -53,7 +53,59 @@ public class Principal {
         correnteEspecial.statusConta(controleEspecial);
         contaPoupanca.statusConta(controlePoupanca);
         
-        //Depositando
+        //Depositando R$500,00
+        System.out.println("\n>>> Depositando R$500,00");
+        System.out.println("\n--- Corrente Normal ---");
+        correnteNormal.depositar(500);
+        System.out.println("\n--- Corrente Especial ---");
+        correnteEspecial.depositar(500);
+        System.out.println("\n--- Poupanca ---");
+        contaPoupanca.depositar(500);
+        
+        //Retirando R$1000,50
+        System.out.println("\n>>> Retirando R$1000,50");
+        System.out.println("\n--- Corrente Normal ---");
+        correnteNormal.retirar(1000.5f);
+        System.out.println("\n--- Corrente Especial ---");
+        correnteEspecial.retirar(1000.5f);
+        System.out.println("\n--- Poupanca ---");
+        contaPoupanca.retirar(1000.5f);
+        
+        //Depositando R$1500,00
+        System.out.println("\n>>> Depositando R$1500,00");
+        System.out.println("\n--- Corrente Normal ---");
+        correnteNormal.depositar(1500);
+        System.out.println("\n--- Corrente Especial ---");
+        correnteEspecial.depositar(1500);
+        System.out.println("\n--- Poupanca ---");
+        contaPoupanca.depositar(1500);
+        
+        //Retirando R$15000,00
+        System.out.println("\n>>> Retirando R$15000,00");
+        System.out.println("\n--- Corrente Normal ---");
+        correnteNormal.retirar(15000);
+        System.out.println("\n--- Corrente Especial ---");
+        correnteEspecial.retirar(15000);
+        System.out.println("\n--- Poupanca ---");
+        contaPoupanca.retirar(15000);
+        
+        //Rendendo conta poupança
+        System.out.println("\n>>> Rendendo Poupanca");
+        contaPoupanca.render();
+        System.out.println(" • Saldo atual: R$" + contaPoupanca.getSaldo());
+        
+        //Criando um cartão para a conta especial
+        System.out.println("\n>>> Criando um cartão para a conta especial...");
+        correnteEspecial.setCartao(new Cartao());
+        correnteEspecial.getCartao().setNumero("5687.4716.8476.9782");
+        correnteEspecial.getCartao().setLimite(5000);
+        correnteEspecial.getCartao().setMelhorDia(18);
+        
+        //Exibindo Informações
+        System.out.println("\n>>> Estado final das contas");
+        correnteNormal.statusConta(controleNormal);
+        correnteEspecial.statusConta(controleEspecial);
+        contaPoupanca.statusConta(controlePoupanca);
     }
     
 }

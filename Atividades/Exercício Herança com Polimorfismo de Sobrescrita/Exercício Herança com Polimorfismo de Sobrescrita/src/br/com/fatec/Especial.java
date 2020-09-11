@@ -22,7 +22,7 @@ public class Especial extends Corrente{
         } else {
             System.out.println("\t• Cartão de Crédito:"
                     + "\n\t\t- Número: " + cartao.getNumero()
-                    + "\n\t\t- Limite: " + cartao.getLimite()
+                    + "\n\t\t- Limite: R$" + cartao.getLimite()
                     + "\n\t\t- Dia para a melhor compra: " + cartao.getMelhorDia());
         }
         System.out.println("\t• Tipo: Corrente Especial");
