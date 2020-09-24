@@ -13,7 +13,7 @@ public class MinhaClasseB implements Exemplo{
 
     @Override
     public void metodoA() {
-        System.out.println("batatinha qnd nasce...");
+        System.out.println("batatinha...");
     }
 
     @Override

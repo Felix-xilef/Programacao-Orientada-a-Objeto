@@ -25,6 +25,7 @@ public class MinhaClasseA implements Exemplo{
     
     public void metodoExclusivo() {
         //bla bla bla
+        System.out.println("Isso foi impresso pela metodoExclusivo da MinhaClasseA");
     }
     
 }
