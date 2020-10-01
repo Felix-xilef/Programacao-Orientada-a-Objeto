@@ -31,7 +31,6 @@ public class Proprietario {
             }
         }
         veiculosSet.add(veiculo);
-        System.out.println("...Veículo adicionado com sucesso! (" + veiculo.getPlaca() + ")");
     }
     
     public float valorBens() {
