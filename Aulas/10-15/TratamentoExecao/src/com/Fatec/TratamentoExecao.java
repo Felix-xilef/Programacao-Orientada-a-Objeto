@@ -53,6 +53,7 @@ public class TratamentoExecao {
         }
         
         /**********************************************************************/
+        
         System.out.println();
         
         Conta conta = new Conta();
@@ -63,6 +64,15 @@ public class TratamentoExecao {
         } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
+        
+        System.out.println("Estou no programa principal");
+        
+        /**********************************************************************/
+        
+        System.out.println();
+        
+        //Utilizando a classe de exceção própria
+        conta.saca2(5000);
         
         System.out.println("Estou no programa principal");
     }

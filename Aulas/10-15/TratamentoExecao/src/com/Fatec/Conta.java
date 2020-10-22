@@ -22,6 +22,15 @@ public class Conta {
             return true;
         }
     }
+    
+    public void saca2(double valor) throws SaldoInsuficienteException {
+        if(valor > saldo) {
+            //Gerar uma Exceção
+            throw new SaldoInsuficienteException("Saldo da conta não permite esse saque!!!");
+        } else {
+            saldo -= valor;
+        }
+    }
 
     //Getters & Setters
     public String getCorrentista() {
