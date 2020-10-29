@@ -6,6 +6,7 @@
 package br.com.fatec.view;
 
 import br.com.fatec.model.Contato;
+import br.com.fatec.model.Telefone;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,6 +23,9 @@ public class Exemplo extends javax.swing.JFrame {
      */
     public Exemplo() {
         initComponents();
+        
+        //Desabilitar botão Incluir na Lista
+        btnIncluirLista.setEnabled(false);
     }
 
     /**
@@ -40,6 +44,7 @@ public class Exemplo extends javax.swing.JFrame {
         btnExibir = new javax.swing.JButton();
         btnGuardarClasse = new javax.swing.JButton();
         btnExibirClasse = new javax.swing.JButton();
+        btnIncluirLista = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Exemplo de Tela Gráfica");
@@ -70,6 +75,13 @@ public class Exemplo extends javax.swing.JFrame {
             }
         });
 
+        btnIncluirLista.setText("Incluir na Lista");
+        btnIncluirLista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncluirListaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -89,7 +101,10 @@ public class Exemplo extends javax.swing.JFrame {
                             .addComponent(lblNome))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnIncluirLista))
                             .addComponent(txtNome))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -103,7 +118,8 @@ public class Exemplo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTelefone)
-                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnIncluirLista))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExibir)
@@ -130,18 +146,31 @@ public class Exemplo extends javax.swing.JFrame {
         
         //Armazena os dados no objeto
         contato.setNome(txtNome.getText());
-        contato.setTelefone(txtTelefone.getText());
+        contato.getTelefone().add(new Telefone(txtTelefone.getText()));
+        
+        //Apagar o texto e focar no telefone e Habilitar o botão para incluir novos telefones
+        txtTelefone.setText("");
+        txtTelefone.requestFocus();
+        btnIncluirLista.setEnabled(true);
     }//GEN-LAST:event_btnGuardarClasseActionPerformed
 
     private void btnExibirClasseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExibirClasseActionPerformed
         try {
-            JOptionPane.showMessageDialog(rootPane, "Nome: " + contato.getNome() + "\nTelefone: " + contato.getTelefone(),
+            JOptionPane.showMessageDialog(rootPane, "Nome: " + contato.getNome() + "\nTelefones: " + contato.listaTelefones(),
                                             "Informação ao Usuário", JOptionPane.INFORMATION_MESSAGE);
         } catch (NullPointerException ex) {
             JOptionPane.showMessageDialog(rootPane, "Ainda não existe contato criado",
                                             "Informação ao Usuário", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnExibirClasseActionPerformed
+
+    private void btnIncluirListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirListaActionPerformed
+        contato.getTelefone().add(new Telefone(txtTelefone.getText()));
+
+        //Apagar o texto e focar no telefone
+        txtTelefone.setText("");
+        txtTelefone.requestFocus();
+    }//GEN-LAST:event_btnIncluirListaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,6 +211,7 @@ public class Exemplo extends javax.swing.JFrame {
     private javax.swing.JButton btnExibir;
     private javax.swing.JButton btnExibirClasse;
     private javax.swing.JButton btnGuardarClasse;
+    private javax.swing.JButton btnIncluirLista;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblTelefone;
     private javax.swing.JTextField txtNome;

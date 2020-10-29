@@ -44,7 +44,11 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtTelefone" min="-2" pref="140" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="txtTelefone" min="-2" pref="140" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnIncluirLista" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="txtNome" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -65,6 +69,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblTelefone" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtTelefone" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnIncluirLista" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -114,6 +119,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExibirClasseActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnIncluirLista">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Incluir na Lista"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIncluirListaActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

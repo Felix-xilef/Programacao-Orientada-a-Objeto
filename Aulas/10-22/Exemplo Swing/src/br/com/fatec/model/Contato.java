@@ -5,19 +5,47 @@
  */
 package br.com.fatec.model;
 
+import java.util.HashSet;
+
 /**
  *
  * @author Felix Petiz Bonilho
  */
 public class Contato {
-    private String nome, telefone;
+    private String nome;
+    //Agregação
+    private HashSet<Telefone> telefones = new HashSet<>();
 
+    /**
+     * Sobrescreve o método toString() permitindo que o nome do contato seja exibido na ComboBox
+     * @return 
+     */
+    @Override
+    public String toString() {
+        return nome;
+    }
+    
+    /**
+     * Devolve todos os telefones do contato separados por traço e '\n'
+     * @return 
+     */
+    public String listaTelefones() {
+        //Classe adequada para fazer concatenações consecutivas
+        StringBuilder lista = new StringBuilder();
+        for (Telefone aux : telefones) {
+            lista.append(aux.getNumero() + "\n");
+        }
+        return lista.toString();
+    }
+    
+    //Construtores
     public Contato() {
     }
 
     public Contato(String nome, String telefone) {
         this.nome = nome;
-        this.telefone = telefone;
+        //Adiciona telefone na coleção de telefones
+        this.telefones.add(new Telefone(telefone));
     }
     
     //Getters & Setters
@@ -29,11 +57,11 @@ public class Contato {
         this.nome = nome;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public HashSet<Telefone> getTelefone() {
+        return telefones;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setTelefone(HashSet<Telefone> telefone) {
+        this.telefones = telefone;
     }
 }
