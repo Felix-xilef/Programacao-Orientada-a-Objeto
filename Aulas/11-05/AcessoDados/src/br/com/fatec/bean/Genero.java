@@ -10,8 +10,8 @@ package br.com.fatec.bean;
  * - Atributos
  * - Getters e Setters
  * - Construtores default e paramétricos
- * - Sobrescrita
- * - Sobrescrita
+ * - Sobrescrita do toString()
+ * - Sobrescrita do equals() e hashCode()
  *
  * @author Felix Petiz Bonilho
  */
