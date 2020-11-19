@@ -6,7 +6,9 @@
 package br.com.fatec.view;
 
 import br.com.fatec.DAO.GeneroDAO;
+import br.com.fatec.DAO.MidiaDAO;
 import br.com.fatec.bean.Genero;
+import br.com.fatec.bean.Midia;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -14,30 +16,49 @@ import javax.swing.JOptionPane;
  *
  * @author Felix Petiz Bonilho
  */
-public class GeneroView extends javax.swing.JFrame {
-
-    //Variáveis auxiliares
+public class MidiaView extends javax.swing.JFrame {
+    
+    private Midia midia = null;
+    private MidiaDAO midiaDAO = new MidiaDAO();
     private Genero genero = null;
     private GeneroDAO generoDAO = new GeneroDAO();
     
     /**
      * Move os dados que estão em um objeto para os campos do formulário
-     * @param g Objeto com os dados a serem exibidos
+     * @param m Objeto com os dados a serem exibidos
      */
-    private void moveObjetoParaTela(Genero g) {
-        txtCodigo.setText(Integer.toString(g.getCodGenero()));
-        txtDescricao.setText(g.getDescricao());
+    private void moveObjetoParaTela(Midia m) {
+        txtCodigo.setText(Integer.toString(m.getCodMidia()));
+        txtTitulo.setText(m.getTitulo());
+        txtValor.setText(Float.toString(m.getValor()));
+        txtCodGenero.setText(Integer.toString(m.getCodGenero()));
+        try {
+            genero = generoDAO.buscaID(new Genero(m.getCodGenero(), ""));
+            if (genero != null) {
+                txtDescGenero.setText(genero.getDescricao());
+            } else {
+                throw new SQLException();
+            }
+        } catch (SQLException ex) {
+            txtDescGenero.setText("Erro ao encontrar o Genero");
+        }
     }
     
     /**
-     * Move os dados que estão no formulário para um objeto Genero
+     * Move os dados que estão no formulário para um objeto Midia
      * @return Objeto com os dados da tela
      */
-    private Genero moveTelaParaObjeto() {
-        genero = new Genero();
-        genero.setCodGenero(Integer.parseInt(txtCodigo.getText()));
-        genero.setDescricao(txtDescricao.getText());
-        return genero;
+    private Midia moveTelaParaObjeto() {
+        midia = new Midia();
+        midia.setCodMidia(Integer.parseInt(txtCodigo.getText()));
+        midia.setTitulo(txtTitulo.getText());
+        String aux = txtValor.getText();
+        if (aux.equals("")) aux = "0";
+        midia.setValor(Float.parseFloat(aux));
+        aux = txtCodGenero.getText();
+        if (aux.equals("")) aux = "0";
+        midia.setCodGenero(Integer.parseInt(aux));
+        return midia;
     }
     
     private void mensagem(String texto) {
@@ -46,7 +67,10 @@ public class GeneroView extends javax.swing.JFrame {
     
     private void limparCampos() {
         txtCodigo.setText("");
-        txtDescricao.setText("");
+        txtTitulo.setText("");
+        txtValor.setText("");
+        txtCodGenero.setText("");
+        txtDescGenero.setText("");
     }
     
     private void habilitaInclusao() {
@@ -60,14 +84,13 @@ public class GeneroView extends javax.swing.JFrame {
         btnAlterar.setEnabled(true);
         btnExcluir.setEnabled(true);
     }
-    
+
     /**
-     * Creates new form GeneroView
+     * Creates new form MidiaView
      */
-    public GeneroView() {
+    public MidiaView() {
         initComponents();
         habilitaInclusao();
-        txtCodigo.requestFocus();
     }
 
     /**
@@ -80,47 +103,35 @@ public class GeneroView extends javax.swing.JFrame {
     private void initComponents() {
 
         lblCodigo = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
+        lblValor = new javax.swing.JLabel();
+        lblGenero = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
-        lblDescricao = new javax.swing.JLabel();
-        txtDescricao = new javax.swing.JTextField();
-        btnPesquisar = new javax.swing.JButton();
-        btnAlterar = new javax.swing.JButton();
+        txtTitulo = new javax.swing.JTextField();
+        txtValor = new javax.swing.JTextField();
+        txtCodGenero = new javax.swing.JTextField();
         btnIncluir = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
+        btnPesquisar = new javax.swing.JButton();
+        txtDescGenero = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblCodigo.setText("Código");
 
-        lblDescricao.setText("Descrição");
+        lblTitulo.setText("Título");
 
-        btnPesquisar.setText("Pesquisar");
-        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisarActionPerformed(evt);
-            }
-        });
+        lblValor.setText("Valor");
 
-        btnAlterar.setText("Alterar");
-        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlterarActionPerformed(evt);
-            }
-        });
+        lblGenero.setText("Genero");
 
         btnIncluir.setText("Incluir");
         btnIncluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIncluirActionPerformed(evt);
-            }
-        });
-
-        btnExcluir.setText("Excluir");
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
             }
         });
 
@@ -131,6 +142,20 @@ public class GeneroView extends javax.swing.JFrame {
             }
         });
 
+        btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
         btnFechar.setText("Fechar");
         btnFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,50 +163,79 @@ public class GeneroView extends javax.swing.JFrame {
             }
         });
 
+        btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
+
+        txtDescGenero.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(lblDescricao)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtDescricao))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnIncluir)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAlterar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnExcluir)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnCancelar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnFechar)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(lblCodigo)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCodigo)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblValor)
+                                .addComponent(lblGenero)
+                                .addComponent(lblTitulo)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnPesquisar)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTitulo)
+                            .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCodGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(84, 84, 84)
+                                        .addComponent(btnPesquisar))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtDescGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnIncluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAlterar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnFechar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCodigo)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCodigo)
                     .addComponent(btnPesquisar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDescricao)
-                    .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTitulo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblValor))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblGenero)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtCodGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDescGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIncluir)
                     .addComponent(btnAlterar)
@@ -196,15 +250,15 @@ public class GeneroView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        genero = moveTelaParaObjeto();
+        midia = moveTelaParaObjeto();
         try {
-            if (generoDAO.insere(genero)) {
-                mensagem("Genero Incluido com Sucesso!!!");
+            if (midiaDAO.insere(midia)) {
+                mensagem("Midia Incluida com Sucesso!!!");
                 limparCampos();
                 //Manda o foco para o codigo
                 txtCodigo.requestFocus();
             } else {
-                mensagem("Não foi possível efetuar a inclusão do Genero!!!");
+                mensagem("Não foi possível efetuar a inclusão da Midia!!!");
             }
         } catch (SQLException ex) {
             mensagem("Erro de Banco: \n" + ex.getMessage());
@@ -212,16 +266,16 @@ public class GeneroView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        genero = moveTelaParaObjeto();
+        midia = moveTelaParaObjeto();
         try {
             //Buscar informações
-            genero = generoDAO.buscaID(genero);
+            midia = midiaDAO.buscaID(midia);
             //Verifica se achou
-            if (genero != null) {
-                moveObjetoParaTela(genero);
+            if (midia != null) {
+                moveObjetoParaTela(midia);
                 habilitaAltExc();
             } else {
-                mensagem("Genero não encontrado!!!");
+                mensagem("Midia não encontrado!!!");
                 limparCampos();
                 txtCodigo.requestFocus();
             }
@@ -231,12 +285,12 @@ public class GeneroView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        genero = moveTelaParaObjeto();
+        midia = moveTelaParaObjeto();
         int resp = JOptionPane.showConfirmDialog(rootPane, "Confirma Exclusão", "Informação ao Usuário", JOptionPane.YES_NO_OPTION);
         if (resp == JOptionPane.YES_OPTION) {
             try {
-                if (generoDAO.remove(genero)) {
-                    mensagem("Genero excluído com sucesso!!!");
+                if (midiaDAO.remove(midia)) {
+                    mensagem("Midia excluído com sucesso!!!");
                     limparCampos();
                     txtCodigo.requestFocus();
                     habilitaInclusao();
@@ -248,10 +302,10 @@ public class GeneroView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        genero = moveTelaParaObjeto();
+        midia = moveTelaParaObjeto();
         try {
-            if (generoDAO.altera(genero)) {
-                mensagem("Genero alterado com sucesso!!!");
+            if (midiaDAO.altera(midia)) {
+                mensagem("Midia alterado com sucesso!!!");
                 limparCampos();
                 txtCodigo.requestFocus();
                 habilitaInclusao();
@@ -290,20 +344,20 @@ public class GeneroView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GeneroView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MidiaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GeneroView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MidiaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GeneroView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MidiaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GeneroView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MidiaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GeneroView().setVisible(true);
+                new MidiaView().setVisible(true);
             }
         });
     }
@@ -316,8 +370,13 @@ public class GeneroView extends javax.swing.JFrame {
     private javax.swing.JButton btnIncluir;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JLabel lblCodigo;
-    private javax.swing.JLabel lblDescricao;
+    private javax.swing.JLabel lblGenero;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblValor;
+    private javax.swing.JTextField txtCodGenero;
     private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextField txtDescricao;
+    private javax.swing.JTextField txtDescGenero;
+    private javax.swing.JTextField txtTitulo;
+    private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
 }
