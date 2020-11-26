@@ -22,8 +22,8 @@ public class AcessoDados {
         //...
         try {
             //Testar conexão
-            System.out.println("Obtendo conexão antes de abri-la...");
-            Banco.obterConexao();
+            /*System.out.println("Obtendo conexão antes de abri-la...");
+            Banco.obterConexao();*/
             System.out.println("Abrindo...");
             Banco.conectar();
             System.out.println("Fechando...");
